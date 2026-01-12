@@ -52,3 +52,13 @@ footer {
     color: #090a0b;
     padding: 2em;
 }
+
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: 1fr; 
+    }
+
+    h2 {
+        font-size: 1.6rem; 
+    }
+}

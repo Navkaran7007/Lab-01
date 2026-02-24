@@ -1,6 +1,9 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { employeeRepo } from "./repository/employee";
+import type { Employee } from "./repository/employee";
 
 import { Layout } from "./components/layout";
 import { EmployeeList } from "./components/employeelist";
@@ -8,11 +11,15 @@ import { EmployeeForm } from "./components/form";
 import { Organisation } from "./components/organisation";
 
 function App() {
-  const [employees, setEmployees] = useState<string[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
-  const addEmployee = (name: string) => {
-    setEmployees([...employees, name]);
-  };
+  function loadEmployees() {
+    setEmployees(employeeRepo.getEmployees());
+  }
+
+  useEffect(() => {
+    loadEmployees();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -25,7 +32,7 @@ function App() {
             element={
               <>
                 <EmployeeList employees={employees} />
-                <EmployeeForm addEmployee={addEmployee} />
+                <EmployeeForm refresh={loadEmployees} />
               </>
             }
           />

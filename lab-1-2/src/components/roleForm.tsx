@@ -1,7 +1,9 @@
 import { useFormInput } from "../components/userInput";
 import { roleService } from "../services/roleService";
+import { useAuth } from "@clerk/react";
 
 export function RoleForm({ refresh }: { refresh: () => void }) {
+  const { isSignedIn } = useAuth();
   const firstName = useFormInput("");
   const lastName = useFormInput("");
   const role = useFormInput("");
@@ -36,6 +38,19 @@ export function RoleForm({ refresh }: { refresh: () => void }) {
     lastName.setValue("");
     role.setValue("");
     refresh();
+  }
+  if (!isSignedIn) {
+    return (
+      <div style={{ 
+        padding: "20px", 
+        border: "1px solid #ccc", 
+        borderRadius: "8px",
+        marginTop: "20px"
+      }}>
+        <p>Please sign in to add new roles.</p>
+        <a href="/sign-in" style={{ color: "#0066cc" }}>Log in here</a>
+      </div>
+    );
   }
 
   return (

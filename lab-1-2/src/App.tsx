@@ -1,27 +1,13 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-
-import { employeeRepo } from "./repository/employee";
-import type { Employee } from "./repository/employee";
 
 import { Layout } from "./components/layout";
-import { EmployeeList } from "./components/employeelist";
+import { RoleList } from "./components/RoleList";
 import { EmployeeForm } from "./components/form";
 import { Organisation } from "./components/organisation";
 import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
 
 function App() {
-  const [employees, setEmployees] = useState<Employee[]>([]);
-
-  function loadEmployees() {
-    setEmployees(employeeRepo.getEmployees());
-  }
-
-  useEffect(() => {
-    loadEmployees();
-  }, []);
-
   return (
     <><>
       <header>
@@ -41,8 +27,8 @@ function App() {
             <Route
               path="employees"
               element={<>
-                <EmployeeList employees={employees} />
-                <EmployeeForm refresh={loadEmployees} />
+                <RoleList />
+                <EmployeeForm />
               </>} />
 
             <Route path="organization" element={<Organisation />} />

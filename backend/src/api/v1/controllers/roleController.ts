@@ -4,10 +4,24 @@ import { organisationData } from "../data/organisationData";
 
 export const getRoles = (req: Request, res: Response) => {
   try {
-    const people = roleService.getPeople();
-    const allRoles = [...organisationData, ...people];
-    res.json(allRoles);
-  } catch (error) {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    const all = [...organisationData, ...roleService.getPeople()];
+    const start = (page - 1) * limit;
+
+    res.json({
+      data: all.slice(start, start + limit),
+      pagination: {
+        page,
+        limit,
+        total: all.length,
+        totalPages: Math.ceil(all.length / limit),
+        hasNext: start + limit < all.length,
+        hasPrev: page > 1
+      }
+    });
+  } catch {
     res.status(500).json({ error: "Failed to fetch roles" });
   }
 };
